@@ -3,12 +3,12 @@ from tqdm.notebook import tqdm
 import pandas as pd
 
 
-class SimpleLinearRegression:
+class MySimpleLinearRegression:
     def __init__(self, fit_intercept=True):
         self.fit_intercept = fit_intercept
         self.w = None
 
-    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> "SimpleLinearRegression":
+    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> "MySimpleLinearRegression":
         """
         фукнкция обучения - вычисляет параметры модели (веса) по данной выборке
 
@@ -25,7 +25,7 @@ class SimpleLinearRegression:
 
         if not np.isclose(np.linalg.det(X.T @ X), 0.0):
             self.w = np.linalg.inv(X.T @ X) @ X.T @ y
-        else: 
+        else:
             self.w = np.linalg.lstsq(X, y, rcond=None)[0]
         return self
 
@@ -63,7 +63,7 @@ class SimpleLinearRegression:
         return self.w
 
 
-class SGDLinearRegression:
+class MySGDLinearRegression:
     def __init__(self, fit_intercept: bool = True, learning_rate: float = 0.01,
                  n_iter: int = 100, batch_size: int = 10, random_state: int = 21):
 
@@ -97,7 +97,7 @@ class SGDLinearRegression:
         gradient = (2/n) * X_batch.T @ error  # type: ignore
         return gradient, error
 
-    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> "SGDLinearRegression":
+    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> "MySGDLinearRegression":
         """
         Обучение модели методом стохастического градиентного спуска
 
@@ -166,7 +166,7 @@ class SGDLinearRegression:
         return self.w
 
 
-class ClassicalGDLinearRegression:
+class MyClassicalGDLinearRegression:
     def __init__(self, fit_intercept: bool = True, learning_rate: float = 0.01,
                  n_iter: int = 1000, random_state: int = 21):
 
@@ -199,7 +199,7 @@ class ClassicalGDLinearRegression:
         gradient = (2/n) * X.T @ error  # type: ignore
         return gradient, error
 
-    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> 'ClassicalGDLinearRegression':
+    def fit(self, X: np.ndarray | pd.DataFrame, y: np.ndarray | pd.DataFrame | pd.Series) -> 'MyClassicalGDLinearRegression':
         """
         Обучение модели с помощью классического градиентного спуска
 
@@ -254,7 +254,7 @@ class ClassicalGDLinearRegression:
         return self.w
 
 
-class LassoLinearRegression(SGDLinearRegression):
+class MyLassoLinearRegression(MySGDLinearRegression):
     def __init__(self, fit_intercept: bool = True, learning_rate: float = 0.01, n_iter: int = 100,
                  batch_size: int = 10, random_state: int = 21, alpha: float = 0.01):
         super().__init__(fit_intercept, learning_rate, n_iter, batch_size, random_state)
@@ -279,7 +279,7 @@ class LassoLinearRegression(SGDLinearRegression):
         return mse_grad + l1_grad, error
 
 
-class RidgeLinearRegression(SGDLinearRegression):
+class MyRidgeLinearRegression(MySGDLinearRegression):
     def __init__(self, fit_intercept: bool = True, learning_rate: float = 0.01,
                  n_iter: int = 1000, batch_size: int = 10, random_state: int = 21, alpha: float = 0.01):
         super().__init__(fit_intercept, learning_rate, n_iter, batch_size, random_state)
@@ -305,7 +305,7 @@ class RidgeLinearRegression(SGDLinearRegression):
         return mse_grad + l2_grad, error
 
 
-class ElasticNetLinearRegression(SGDLinearRegression):
+class MyElasticNetLinearRegression(MySGDLinearRegression):
     def __init__(self, fit_intercept: bool = True, learning_rate: float = 0.01,
                  n_iter: int = 1000, batch_size: int = 10, random_state: int = 21,
                  alpha: float = 0.01, l1_ratio: float = 0.5):
